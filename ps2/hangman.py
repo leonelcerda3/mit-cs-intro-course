@@ -159,31 +159,26 @@ def hangman(secret_word):
                   else:
                      guesses_left -= 1
                      message = f"Oops! {BOLD}{guess.upper()}{END} is not in my word: "
-            print()
-            print(message, get_guessed_word(secret_word, letters_guessed))
-            print()
+            print("\n" + message, get_guessed_word(secret_word, letters_guessed))
+            
             
         
-            if runs > 1 and guesses_left > 0 and message == "Good guess: ":
-                yes_or_no = input("Would you like to guess the word? (Y)es or (N)o: ").lower()
-                yes_or_no = yes_or_no.lower()
-                print()
-                if yes_or_no == "y" :
-                   print()
-                   final_guess = input("Please input your final guess if you have one: ")
-                   print()
+            if guesses_left != 0 and message == "Good guess: " and len(letters_guessed) > 2 and not is_word_guessed(secret_word, letters_guessed):
+                yes_or_no = input("\n" + "Would you like to guess the word? (Y)es or (N)o: ").lower()
+
+                if yes_or_no == "y" :   
+                   final_guess = input("\n" + "Please input your final guess if you have one: ")
+                   
                    if final_guess == secret_word:
                        win()
-                   else: 
-                       print()
-                       print(f"{BOLD}{final_guess.upper()}{END} was not my word!")
+                   else:   
+                       print("\n" + f"{BOLD}{final_guess.upper()}{END} was not my word!")
                        lose()
+                
                 while yes_or_no not in ("y", "n"):
-                   print()
-                   print("That is not a valid answer. Please try again.")
-                   print()
-                   yes_or_no = input("Would you like to guess the word? (Y)es or (N)o: ").lower()
-                   print()
+                   print("\n" + "That is not a valid answer. Please try again.")
+                   yes_or_no = input("\n" + "Would you like to guess the word? (Y)es or (N)o: ").lower()
+                
                    
             
          
@@ -193,7 +188,6 @@ def hangman(secret_word):
       win()
     else:
       lose()
-        
     
 
         
@@ -219,20 +213,20 @@ def match_with_gaps(my_word, other_word):
     '''
 
     my_word = my_word.replace(" ", "")
-    #  where my_word is  _  _  _  _  _  
-   
-    # if not same len -> false
+    
+
     if len(my_word) != len(other_word):
         return False
     
-    # search guessed word and see if same letters
+    
     for i in range(len(my_word)):
-        # search the whole word
-        # grab each letter and check if in the wrong letters section
-            # if it is update knowledge and remove word
+        if my_word[i] == "_":
+            if other_word[i] in my_word:
+                return False
         
-        
-        if my_word[i] in 
+        else:
+            if my_word[i] != other_word[i]:
+                return False
     return True
     
 
@@ -407,6 +401,6 @@ def hangman_with_hints(secret_word):
 
 
 if __name__ == "__main__":
-    #secret_word = random.choice(wordlist)
-    secret_word = "house"
+    secret_word = random.choice(wordlist)
+    
     hangman_with_hints(secret_word)
